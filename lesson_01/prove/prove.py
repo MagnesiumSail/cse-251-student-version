@@ -37,7 +37,7 @@ from cse251 import *
 You may change the following variable to `False` to skip drawing part 1, but you
 must set this value back to `True` when submitting the assignment.
 """
-draw_part_1 = True # <--- You may change this but read above.
+draw_part_1 = False # <--- You may change this but read above.
 
 def draw_square(tur, x, y, side, color='black'):
     """Draw Square"""
@@ -99,32 +99,40 @@ def draw_coord_system(tur, x, y, size=300, color='black'):
         tur.backward(size)
         tur.left(90)
 
-def draw_squares(tur):
+def draw_squares(tur, lock_Gaming):
     """Draw a group of squares"""
     for x in range(-300, 350, 200):
         for y in range(-300, 350, 200):
+            lock_Gaming.acquire()
             draw_square(tur, x - 50, y + 50, 100)
+            lock_Gaming.release()
 
 
-def draw_circles(tur):
+def draw_circles(tur, lock_Gaming):
     """Draw a group of circles"""
     for x in range(-300, 350, 200):
         for y in range(-300, 350, 200):
+            lock_Gaming.acquire()
             draw_circle(tur, x, y-2, 50)
+            lock_Gaming.release()
 
 
-def draw_triangles(tur):
+def draw_triangles(tur, lock_Gaming):
     """Draw a group of triangles"""
     for x in range(-300, 350, 200):
         for y in range(-300, 350, 200):
+            lock_Gaming.acquire()
             draw_triangle(tur, x-30, y-30+10, 60)
+            lock_Gaming.release()
 
 
-def draw_rectangles(tur):
+def draw_rectangles(tur, lock_Gaming):
     """Draw a group of Rectangles"""
     for x in range(-300, 350, 200):
         for y in range(-300, 350, 200):
+            lock_Gaming.acquire()
             draw_rectangle(tur, x-10, y+5, 20, 15)
+            lock_Gaming.release()
 
 
 def run_no_threads(tur, log, main_turtle):
@@ -172,10 +180,12 @@ def run_with_threads(tur, log, main_turtle):
     log.write('-' * 50)
     log.start_timer('Start Drawing With Threads')
     tur.move(0, 0)
-
-    # TODO - Start adding your code here.
-    # You need to use 4 threads where each thread concurrently drawing one type of shape.
-    # You are free to change any functions in this code except those we marked DO NOT CHANGE.
+    
+    lock_Gaming = threading.Lock()
+    threading.Thread(target=draw_squares, args=(tur, lock_Gaming)).start()
+    threading.Thread(target=draw_circles, args=(tur, lock_Gaming)).start()
+    threading.Thread(target=draw_triangles, args=(tur, lock_Gaming)).start()
+    threading.Thread(target=draw_rectangles, args=(tur, lock_Gaming)).start()
 
     log.step_timer('All drawing commands have been created')
 
