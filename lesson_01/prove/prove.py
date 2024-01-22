@@ -2,7 +2,7 @@
 Course: CSE 251 
 Lesson: L01 Prove
 File:   prove.py
-Author: <Add name here>
+Author: Indiana Brown
 
 Purpose: Drawing with Python Turtle
 
