@@ -2,7 +2,7 @@
 Course: CSE 251 
 Lesson: L02 Prove
 File:   prove.py
-Author: <Add name here>
+Author: Indiana Brown
 
 Purpose: Retrieve Star Wars details from a server
 
@@ -54,20 +54,58 @@ call_count = 0
 
 
 # TODO Add your threaded class definition here
+class ThreadedClass(threading.Thread):
+    def __init__(self, url):
+        super().__init__()
+        self.url = url
+        self.data = None
+        self.call_made = 0
+
+    def run(self):
+        try:
+            response = requests.get(self.url)
+            if response.status_code == 200:
+                self.data = response.json()
+            self.call_made = 1
+        except Exception as e:
+            print(f"Error retrieving data from {self.url}: {e}")
 
 
 # TODO Add any functions you need here
-
 
 def main():
     log = Log(show_terminal=True)
     log.start_timer('Starting to retrieve data from the server')
 
-    # TODO Retrieve Top API urls
+    top_api_thread = ThreadedClass(TOP_API_URL)
+    top_api_thread.start()
+    top_api_thread.join()
 
-    # TODO Retrieve Details on film 6
+    total_calls = top_api_thread.call_made
 
-    # TODO Display results
+    if top_api_thread.data:
+        threads = []
+        for url in top_api_thread.data.items():
+            thread = ThreadedClass(url)
+            threads.append(thread)
+            thread.start()
+
+        for thread in threads:
+            thread.join()
+            total_calls += thread.call_made
+
+        # Display results
+        for thread in threads:
+            if thread.data:
+                # Process and display the data
+                log.write(f'{thread.url} => {len(thread.data)}')
+            else:
+                log.write(f'No data retrieved from {thread.url}')
+
+        log.stop_timer('Total Time To complete')
+        log.write(f'There were {total_calls} calls to the server')
+    else:
+        log.write('Failed to retrieve top API data')
 
     log.stop_timer('Total Time To complete')
     log.write(f'There were {call_count} calls to the server')

@@ -1,0 +1,11 @@
+20:43:00| Starting to retrieve data from the server
+20:43:02| No data retrieved from http://127.0.0.1:8790/people/
+20:43:02| No data retrieved from http://127.0.0.1:8790/planets/
+20:43:02| No data retrieved from http://127.0.0.1:8790/films/
+20:43:02| No data retrieved from http://127.0.0.1:8790/species/
+20:43:02| No data retrieved from http://127.0.0.1:8790/vehicles/
+20:43:02| No data retrieved from http://127.0.0.1:8790/starships/
+20:43:02| Total Time To complete = 2.19209460
+20:43:02| There were 7 calls to the server
+20:43:02| Total Time To complete = 2.19510920
+20:43:02| There were 0 calls to the server

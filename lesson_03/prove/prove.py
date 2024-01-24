@@ -1,4 +1,5 @@
 """
+THIS IS THE SOLUTION
 Course: CSE 251 
 Lesson: L03 Prove
 File:   prove.py
